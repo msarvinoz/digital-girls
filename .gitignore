@@ -1,0 +1,12 @@
+.idea
+main/migrations/*
+__pycache__
+media/
+aboutimage/
+directionimage/
+infoimage/
+mainimage/
+resultimage/
+db.sqlite3
+!main/migrations/__init__.py
+venv
