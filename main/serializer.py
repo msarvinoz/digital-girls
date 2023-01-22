@@ -65,10 +65,11 @@ class InfoSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Register
-        fields = ['title_ru', 'title_uz']
+        fields = ['title_ru', 'title_uz', 'status']
 
 
 class RegistrationTabSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegistrationTab
         fields = '__all__'
+

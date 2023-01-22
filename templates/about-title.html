@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<main class="content">
+	<button type="button" class="btn btn-success float-right mt-n1" data-toggle="modal" data-target="#centeredModalPrimary"><i class="fas fa-plus"></i> Titles</button>
+	<div class="modal fade" id="centeredModalPrimary" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Create new model</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<form action="{% url 'create-ab-tit' %}" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="row" style="padding:10px;">
+						<div class="col-md-12">
+							<div class="form-group">
+								<textarea class="form-control" name="title_ru" rows="1" placeholder="title_ru..." required></textarea>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<textarea class="form-control" name="title_uz" rows="1" placeholder="title_uz..." required></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid p-0">
+		<h1 class="h3 mb-3">About Titles</h1>
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="row">
+							{% for i in titles %}
+							<div class="col-12">
+								<div style="background-color: #EFE7E7;" class="card mb-3">
+									<div class="row g-0">
+										<div class="col-md-4"style="margin-top:20px;">
+											<div class="card-body">
+												<p class="h4">{{ i.title_ru }}</p>
+											</div>
+										</div>
+										<div class="col-md-4" style="margin-top:20px;">
+											<div class="card-body">
+												<p class="h4">{{ i.title_uz }}</p>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-2 ml-2">
+										{% if i.is_active == True %}
+										<a href="{% url 'activate-title' i.id %}" style="padding:5px;"><button class="btn btn-success"><i class="fas fa-check"></i></button></a>
+										{% elif s_num == 4 %}
+										<button type="button" class="btn btn-primary" style="margin-left:10px;" data-toggle="modal" data-target="#sizedModalMd{{i.id}}"><i class="fas fa-square"></i></button>
+										<div class="modal fade" id="sizedModalMd{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+											<div class="modal-dialog modal-md" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Change active</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													{% for x in active_titles %}
+													<form action="{% url 'modal-about' i.id %}" method="post">
+														{% csrf_token %}
+														<div class="row" style="padding:10px;">
+															<div class="col-3">
+																<h5>{{ x.title_ru }}</h5>
+															</div>
+															<div class="col-3">
+																<h5>{{ x.title_uz }}</h5>
+															</div>
+															<div class="col-1">
+																<input type="hidden" name="modal_id" value="{{ x.id }}">
+																<button type="submit" class="btn btn-danger" style="margin-top:40px;">-</button>
+															</div>
+														</div>
+													</form>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+										{% else %}
+										<a href="{% url 'activate-title' i.id %}" style="padding:5px;"><button class="btn btn-primary"><i class="fas fa-square"></i></button></a>
+										{% endif %}
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#coloredModal{{i.id}}"><i class="fas fa-edit"></i></button>
+										<div class="modal modal-colored modal-warning fade" id="coloredModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Colored modal</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													</div>
+													<form action="{% url 'upd-ab-tit' i.id %}" method="post" enctype="multipart/form-data">
+														{% csrf_token %}
+														<div class="row" style="padding:10px;">
+															<div class="col-md-12">
+																<div class="form-group">
+																	<textarea class="form-control" name="title_ru" rows="1" required>{{i.title_ru}}</textarea>
+																</div>
+															</div>
+															<div class="col-md-12">
+																<div class="form-group">
+																	<textarea class="form-control" name="title_uz" rows="1" required>{{i.title_uz}}</textarea>
+																</div>
+															</div>
+
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+															<input type="hidden" name="modal_id" value="{{ i.id }}">
+															<button type="submit" class="btn btn-light">Save changes</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<a href="{% url 'del-ab-tit' i.id %}" style="padding:5px;"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+{% endblock content %}
+
+{% block script %}
+	<script>
+		$(function() {
+			// Datatables clients
+			$("#datatables-clients").DataTable({
+				responsive: true,
+				order: [
+					[1, "asc"]
+				]
+			});
+		});
+	</script>
+{% endblock script %}

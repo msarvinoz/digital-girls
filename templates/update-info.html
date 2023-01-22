@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+      <h4>Edit About Items</h4>
+      <br>
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="row mb-5">
+        {% csrf_token %}
+        <div class="col-xl-2">
+            <input type="text" name="website" class="form-control" required placeholder="website">
+        </div>
+        <div class="col-xl-2">
+            <input type="number" name="phone" class="form-control" required placeholder="phone">
+        </div>
+        <div class="col-xl-2">
+            <input type="email" name="email" class="form-control" required placeholder="email">
+        </div>
+        <div class="col-xl-2">
+            <input type="text" name="address_ru" class="form-control" required placeholder="address_ru">
+        </div>
+        <div class="col-xl-2">
+            <input type="text" name="address_uz" class="form-control" required placeholder="address_uz">
+        </div>
+        <div class="col-xl-2">
+            <input type="number" name="latitude" class="form-control" required placeholder="latitude">
+        </div>
+        <div class="col-xl-2">
+            <input type="number" name="longtitude" class="form-control" required placeholder="longtitude">
+        </div>
+        <div class="col-xl-2">
+            <input type="file" name="logo" required>
+        </div>
+        <div class="col-xl-2">
+            <input type="url" name="instagram" class="form-control" required placeholder="instagram">
+        </div>
+        <div class="col-xl-2">
+            <input type="url" name="telegram" class="form-control" required placeholder="telegram">
+        </div>
+        <div class="col-xl-2">
+            <input type="url" name="you_tube" class="form-control" required placeholder="you_tube">
+        </div>
+        <div class="col-xl-2">
+            <input type="url" name="facebook" class="form-control" required placeholder="facebook">
+        </div>
+        <div class="col-xl-2">
+            <button class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+{% endblock content %}

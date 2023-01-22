@@ -1,0 +1,163 @@
+﻿{% extends "base.html" %}
+{% block content %}
+{% load static %}
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="row">
+						<div class="col-12 col-sm-6 col-xl d-flex">
+							<div class="card flex-fill">
+								<div class="card-body py-4">
+									<div class="media">
+										<div class="d-inline-block mt-2 mr-3">
+											<i class="feather-lg text-primary" data-feather="users"></i>
+										</div>
+										<div class="media-body">
+											<a href="#application"><h3>Applicants</h3></a>
+											<h4 class="mb-2">{{ register_count }}</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6 col-xl d-flex">
+							<div class="card flex-fill">
+								<div class="card-body py-4">
+									<div class="media">
+										<div class="d-inline-block mt-2 mr-3">
+											<i class="feather-lg text-warning" data-feather="activity"></i>
+										</div>
+										<div class="media-body">
+											<a href="#direction"><h3>Directions</h3></a>
+											<h3 class="mb-2">{{ direction_count }}</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6 col-xl d-flex">
+							<div class="card flex-fill">
+								<div class="card-body py-4">
+									<div class="media">
+										<div class="d-inline-block mt-2 mr-3">
+											<i class="feather-lg text-success" data-feather="server"></i>
+										</div>
+										<div class="media-body">
+											<a href="#tasks"><h3>Tasks</h3></a>
+											<h4 class="mb-2">{{ task_count }}</h4>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 col-lg-12 d-flex">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+									<span class="badge badge-primary float-right">Applicants</span>
+									<table id="application" class="table mb-0">
+										<h2>Applications</h2>
+										<br>
+											<thead>
+												<tr>
+													<th>Number</th>
+													<th>Name</th>
+													<th>Surname</th>
+													<th>Phone</th>
+													<th>Email</th>
+													<th>Birth</th>
+													<th>Status</th>
+													<th>Change status</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for i in application_list %}
+												<tr>
+													<td>{{ forloop.counter }}</td>
+													<td>{{ i.name}}</td>
+													<td>{{ i.surname }}</td>
+													<th>{{ i.phone }}</td>
+													<td>{{ i.email }}</td>
+													<td>{{ i.birth }}</td>
+													{% if i.status == 1 %}
+													<td class="btn btn-warning">In Progress</td>
+													{% elif i.status == 2 %}
+													<td class="btn btn-success">Accepted</td>
+													{% elif i.status == 3 %}
+													<td class="btn btn-danger">Denied</td>
+													{% endif %}
+													<td><a href="{% url 'change-applicant-status' i.pk %}"><i class="btn btn-primary">Change</i></a></td>
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-12 col-lg-12 d-flex">
+							<div class="card flex-fill">
+								<div class="card-header">
+									<a href="{% url 'direction-courses' %}"><h2>Our Courses</h2></a>
+									<span class="badge badge-primary float-right">Directions</span>
+								</div>
+								<table id="direction" class="table table-striped my-0">
+									<thead>
+										<tr>
+											<th>Number</th>
+											<th>Type ru</th>
+											<th>Type uz</th>
+											<th>Image</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for i in direction_list %}
+										<tr>
+											<td>{{ forloop.counter }}</td>
+											<td class="d-none d-xl-table-cell">{{ i.directions_ru }}</td>
+											<td class="d-none d-xl-table-cell">{{ i.directions_uz }}</td>
+											<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-12 col-lg-12 d-flex">
+							<div class="card flex-fill">
+								<div class="card-header">
+									<a href="{% url 'task-page' %}"><h2>Our tasks</h2></a>
+									<span class="badge badge-primary float-right">Tasks</span>
+								</div>
+								<table id="tasks" class="table table-striped my-0">
+									<thead>
+										<tr>
+											<th>Number</th>
+											<th>Task ru</th>
+											<th>Task uz</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for i in task_list%}
+										<tr>
+											<td>{{ i.number }}</td>
+											<td class="d-none d-xl-table-cell">{{ i.requirements_ru }}</td>
+											<td class="d-none d-xl-table-cell">{{ i.requirements_uz }}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+{% endblock content %}

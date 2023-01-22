@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<main class="content">
+	<div class="container-fluid p-0">
+		<h1 class="h3 mb-3">About Item add</h1>
+		<form action="{% url 'cre-abt-item' %}" method="post" enctype="multipart/form-data">
+			<div class="row mb-5">
+				{% csrf_token %}
+				<div class="col-xl-2">
+					<input type="text" name="text_ru" class="form-control" required placeholder="text ru">
+				</div>
+				<div class="col-xl-2">
+					<input type="text" name="text_uz" class="form-control" required placeholder="text uz">
+				</div>
+				<div class="col-xl-2">
+					<input type="file" name="image" required>
+				</div>
+				<div class="col-xl-2">
+					<button class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</form>
+<div class="row">
+	<div class="col-12 col-lg-12 d-flex">
+		<div class="card flex-fill w-100">
+			<div class="card-header">
+				<span class="badge badge-danger float-right">All Items</span>
+				<table id="all" class="table mb-0">
+					<h2>Items</h2>
+					<br>
+					<thead>
+					<tr>
+						<th>text_ru</th>
+						<th>text_uz</th>
+						<th>image</th>
+						<th>edit</th>
+						<th>delete</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for i in project %}
+					<tr>
+						<td>{{ i.text_ru}}</td>
+						<td>{{ i.text_uz }}</td>
+						<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
+						<td><a href="{% url 'update-about-item' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+						<td><a href="{% url 'delete-about-item' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="row">
+	<div class="col-12 col-lg-12 d-flex">
+		<div class="card flex-fill w-100">
+			<div class="card-header">
+				<span class="badge badge-success float-right">Active Items</span>
+				<table id="active" class="table mb-0">
+					<h2>Active Items</h2>
+					<br>
+					<thead>
+					<tr>
+						<th>text_ru</th>
+						<th>text_uz</th>
+						<th>image</th>
+						<th>edit</th>
+						<th>delete</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for i in active %}
+					<tr>
+						<td>{{ i.text_ru}}</td>
+						<td>{{ i.text_uz }}</td>
+						<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
+						<td><a href="{% url 'update-about-item' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+						<td><a href="{% url 'delete-about-item' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+						</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+	</div>
+</main>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="content">
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Profile</h1>
+        <div class="row">
+            <div class="col-md-12 col-xl-3">
+                <div class="my-10 my-md-0">
+                    <div class="card-body text-center">
+                      {% if user.image %}
+                      <img src="{{ user.image.url }}" weight="370px" height="380px" alt="">
+                      {% endif %}
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-lg-8">
+              <div class="card">
+                <ul class="list-group card-list-group">
+                  <li class="list-group-item py-5">
+                    <div class="media">
+                      <div class="media-body">
+                        <div class="media-heading">
+                          <h4 class="mb-3">Username: {{user.username}}</h4>
+                          {% if user.first_name %}
+                          <h4 class="mb-3">First name: {{user.first_name}}</h4>
+                          {% endif %}
+                          {% if user.last_name %}
+                          <h4 class="mb-3">Last name: {{user.last_name}}</h4>
+                          {% endif %}
+                          {% if user.email %}
+                          <h4 class="mb-3"><a class="mb-4" href="mailto:{{user.email}}">Email: {{user.email}}</a></h4>
+                          {% endif %}
+                          {% if user.bio %}
+                          <h4 class="mb-3">Bio: {{user.bio}}</h4>
+                          {% endif %}
+                          <h4 class="mb-4">Data joined: {{user.date_joined}}</h4>
+                          <h4 class="mb-4">Last login: {{user.last_login}}</h4>
+                          <div class="d-flex">
+                            <a href="{% url 'user-update' user.pk %}">Change</a>
+                          </div>
+                      </div>
+                    </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+          </div>
+</main>
+{% endblock content %}

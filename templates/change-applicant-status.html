@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Change Applicant status</h4>
+      <br>
+    <form action="" method="post">
+      <div class="row mb-5">
+        {% csrf_token %}
+        <div class="col-xl-2">
+            <select name="status" id="status">
+                <option value="1">In Progress</option>
+                <option value="2">Accepted</option>
+                <option value="3">Denied</option>
+            </select>
+        </div>
+        <div class="col-xl-2">
+          <button class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+    {% if messages %}
+        <div id="message_container" class="row" style="position: absolute; top: 150px; right: 720px; z-index: 999999999; width: 15%!important; margin: 10px;">
+            {% for message in messages %}
+            {% if message.tags == 'success' %}
+            <div style="display:block;" class="alert alert-success">
+                {{ message}}
+            </div>
+            {% elif message.tags == 'error' %}
+            <div style="display:block;" class="alert alert-danger">
+                {{ message}}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+<script>
+    let message_ele = document.getElementById("message_container");
+        setTimeout(function(){
+           message_ele.style.display = "none";
+          //  message_ele.style.height = '10vh'
+        }, 3000);
+        // Timeout is 1 sec, you can change it
+    </script>
+{% endblock content %}

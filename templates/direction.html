@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="content">
+	<div class="container-fluid p-0">
+		<h1 class="h3 mb-3">Add an approach</h1>
+		<form action="{% url 'create-direction' %}" method="post" enctype="multipart/form-data">
+			<div class="row mb-5">
+				{% csrf_token %}
+				<div class="col-xl-2">
+					<input type="text" name="directions_ru" class="form-control" required placeholder="direction ru">
+				</div>
+				<div class="col-xl-2">
+					<input type="text" name="directions_uz" class="form-control" required placeholder="direction uz">
+				</div>
+				<div class="col-xl-2">
+					<input type="file" name="image" required>
+				</div>
+				<div class="col-xl-2">
+					<button class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</form>
+		{% if messages %}
+		<div id="message_container" class="row" style="position: absolute; top: 150px; right: 720px; z-index: 999999999; width: 15%!important; margin: 10px;">
+			{% for message in messages %}
+			{% if message.tags == 'success' %}
+			<div style="display:block;" class="alert alert-success">
+				{{ message}}
+			</div>
+			{% elif message.tags == 'error' %}
+			<div style="display:block;" class="alert alert-danger">
+				{{ message}}
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% endif %}
+		<script>
+			let message_ele = document.getElementById("message_container");
+				setTimeout(function(){
+									   message_ele.style.display = "none";
+					 //  message_ele.style.height = '10vh'
+				}, 3000);
+				// Timeout is 1 sec, you can change it
+			</script>
+<div class="row">
+	<div class="col-12 col-lg-12 d-flex">
+		<div class="card flex-fill w-100">
+			<div class="card-header">
+				<table id="approaches" class="table mb-0">
+					<h2>Approaches</h2>
+					<div class="card-body">
+							<thead>
+							<tr>
+								<th>direction ru</th>
+								<th>direction uz</th>
+								<th>image</th>
+								<th>edit</th>
+								<th>delete</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for i in courses %}
+							<tr>
+								<td>{{i.directions_ru}}</td>
+								<td>{{i.directions_uz}}</td>
+								<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
+								<td><a href="{% url 'update-approach' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+								<td><a href="{% url 'delete-approach' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+								</td>
+							</tr>
+							{% endfor %}
+							</tbody>
+					</div>
+						</table>
+					</div>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+	</div>
+</main>
+{% endblock content %}

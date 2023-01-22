@@ -1,23 +1,40 @@
 from django.db import models
 from phone_field import PhoneField
+from django.db.models import Model
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    image = models.ImageField(upload_to='users/', blank=True, null=True)
+    bio = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.username
+
+    class Meta(AbstractUser.Meta):
+        swappable = 'AUTH_USER_MODEL'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 
 class MainPage(models.Model):
     title = models.CharField(max_length=100)
     text_ru = models.TextField(null=True)
     text_uz = models.TextField(null=True)
-    image = models.ImageField(upload_to='mainimage/')
+    image = models.ImageField(upload_to='media/')
 
 
 class About(models.Model):
     title_ru = models.CharField(max_length=100)
     title_uz = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
 
 
 class AboutItems(models.Model):
     text_ru = models.TextField()
     text_uz = models.TextField()
-    image = models.ImageField(upload_to='aboutimage/')
+    image = models.ImageField(upload_to='media/')
+    is_active = models.BooleanField(default=False)
 
 
 class Direction(models.Model):
@@ -28,7 +45,7 @@ class Direction(models.Model):
 class DirectionItems(models.Model):
     directions_ru = models.CharField(max_length=80)
     directions_uz = models.CharField(max_length=80)
-    image = models.ImageField(upload_to='directionsimage/')
+    image = models.ImageField(upload_to='media/')
 
 
 class Tasks(models.Model):
@@ -50,7 +67,12 @@ class Register(models.Model):
     birth = models.DateField()
     email = models.EmailField()
     address = models.CharField(max_length=255)
-    phone = PhoneField()
+    phone = models.IntegerField()
+    status = models.IntegerField(default=1, choices=(
+        (1, 'In progress'),
+        (2, 'Accepted'),
+        (3, 'Denied'),
+    ))
 
 
 class Results(models.Model):
@@ -61,7 +83,7 @@ class Results(models.Model):
 class ResultItems(models.Model):
     title_ru = models.CharField(max_length=100)
     title_uz = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='resultimage')
+    image = models.ImageField(upload_to='media/')
 
 
 class Info(models.Model):
@@ -74,7 +96,7 @@ class Info(models.Model):
     address_uz = models.CharField(max_length=255)
     latitude = models.FloatField()
     longtitude = models.FloatField()
-    logo = models.ImageField(upload_to='infoimage')
+    logo = models.ImageField(upload_to='media/')
     instagram = models.URLField()
     telegram = models.URLField()
     you_tube = models.URLField()

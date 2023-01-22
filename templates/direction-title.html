@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+					<h1 class="h3 mb-3">Approaches</h1>
+                    <div class="row">
+						<div class="col-xl-12">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Titles</h5>
+								</div>
+								<div class="card-body">
+									<table id="datatables-clients" class="table table-striped" style="width:100%">
+										<thead>
+											<tr>
+												<th>title_ru</th>
+												<th>title_uz</th>
+												<th>edit</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>{{ active_titles.title_ru }}</td>
+												<td>{{ active_titles.title_uz }}</td>
+												<td><a href="{% url 'update-direction-title' active_titles.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+{% endblock content %}

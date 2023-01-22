@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+			<main class="content">
+				<div class="container-fluid p-0">
+					<h1 class="h3 mb-3">Results</h1>
+					{% if list_num < 5 %}
+					<form action="{% url 'create-result' %}" method="post" enctype="multipart/form-data">
+						<div class="row mb-5">
+							{% csrf_token %}
+							<div class="col-xl-2">
+								<input type="text" name="title_ru" class="form-control" required placeholder="title_ru">
+							</div>
+							<div class="col-xl-2">
+								<input type="text" name="title_uz" class="form-control" required placeholder="title_uz">
+							</div>
+							<div class="col-xl-2">
+								<input type="file" name="image">
+							</div>
+							<div class="col-xl-2">
+								<button class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</form>
+					{% else %}
+					<h1>you can't add results anymore, try to change</h1>
+					{% endif %}
+					{% if messages %}
+					<div id="message_container" class="row" style="position: absolute; top: 150px; right: 720px; z-index: 999999999; width: 15%!important; margin: 10px;">
+						{% for message in messages %}
+						{% if message.tags == 'success' %}
+						<div style="display:block;" class="alert alert-success">
+							{{ message}}
+						</div>
+						{% elif message.tags == 'error' %}
+						<div style="display:block;" class="alert alert-danger">
+							{{ message}}
+						</div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+			<script>
+				let message_ele = document.getElementById("message_container");
+					setTimeout(function(){
+					   message_ele.style.display = "none";
+					  //  message_ele.style.height = '10vh'
+					}, 3000);
+					// Timeout is 1 sec, you can change it
+				</script>
+
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="card">
+								<div class="card-header">
+									<h5 class="card-title mb-0">Results</h5>
+								</div>
+								<div class="card-body">
+									<table id="datatables-clients" class="table table-striped" style="width:100%">
+										<thead>
+											<tr>
+												<th>title_ru</th>
+												<th>title_uz</th>
+												<th>image</th>
+												<th>edit</th>
+												<th>delete</th>
+											</tr>
+										</thead>
+										<tbody>
+										{% for i in active_results %}
+											<tr>
+												<td>{{ i.title_ru }}</td>
+												<td>{{i.title_uz}}</td>
+												<td><img src="{{i.image.url}}" weight="70px" height="80px" alt=""></td>
+												<td><a href="{% url 'update-result' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+												<td><a href="{% url 'delete-result' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+												</td>
+											</tr>
+										{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+
+{% endblock content %}
