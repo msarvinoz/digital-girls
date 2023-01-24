@@ -25,7 +25,7 @@ def signin_view(request):
     return render(request, 'sign-in.html')
 
 
-def logout_view(request):
+def logout_view(request, pk):
     logout(request)
     return redirect('sign-in')
 
@@ -40,6 +40,14 @@ def home_view(request):
         'task_count': TaskItems.objects.all().count()
     }
     return render(request, 'dashboard-default.html', context)
+
+
+def search_applicants(request):
+    if request.method == 'POST':
+        search = request.POST['search']
+        s = Register.objects.filter(name_icontains=search)
+        register = Register.objects.all()
+    return redirect('dashboard')
 
 
 def change_applicant_status(request, pk):
@@ -66,6 +74,9 @@ def direction_title(request):
 
 def update_direction_title(request, pk):
     title = Direction.objects.get(pk=pk)
+    context = {
+        'title': title
+    }
     if request.method == "POST":
         title = Direction.objects.get(pk=pk)
         title_ru = request.POST["title_ru"]
@@ -74,7 +85,7 @@ def update_direction_title(request, pk):
         title.title_uz = title_uz
         title.save()
         return redirect("direction-title")
-    return render(request, 'update-direction-title.html')
+    return render(request, 'update-direction-title.html', context)
 
 
 def direction_courses(request):
@@ -85,9 +96,14 @@ def direction_courses(request):
 
 
 def banner_view(request):
+    banner = MainPage.objects.all()
+    s_list = []
+    for i in banner:
+        s_list.append(i)
     context = {
         "banner": MainPage.objects.all().order_by('-id'),
-        'active': MainPage.objects.last()
+        'active': MainPage.objects.last(),
+        's_num': len(s_list),
     }
     return render(request, 'banner.html', context)
 
@@ -112,7 +128,10 @@ def create_direction(request):
 
 
 def update_direction(request, pk):
-    course = DirectionItems.objects.get(pk=pk)
+    courses = DirectionItems.objects.get(pk=pk)
+    context = {
+        'course': courses
+    }
     if request.method == "POST":
         course = DirectionItems.objects.get(pk=pk)
         directions_ru = request.POST["directions_ru"]
@@ -127,7 +146,7 @@ def update_direction(request, pk):
         else:
             messages.error(request, 'can not create!')
         return redirect("direction-courses")
-    return render(request, 'update-direction.html',)
+    return render(request, 'update-direction.html', context)
 
 
 def delete_direction(request, pk):
@@ -239,37 +258,38 @@ def create_about_item(request):
 def update_banner_view(request, pk):
     item = MainPage.objects.get(pk=pk)
     context = {
-        'banner': MainPage.objects.all()
+        'banner': item
     }
     if request.method == "POST":
         item = MainPage.objects.get(pk=pk)
         title = request.POST["title"]
-        image = request.FILES['image']
+        image = request.FILES.get('image')
+        if image is not None:
+            item.image = image
         text_uz = request.POST["text_uz"]
         text_ru = request.POST["text_ru"]
         item.title = title
         item.text_ru = text_ru
         item.text_uz = text_uz
-        item.image = image
-        if title and text_ru and text_uz is not None:
-            item.save()
+        item.save()
         return redirect("banner")
     return render(request, 'update-banner.html', context)
 
 
 def update_about_items(request, pk):
-    item = AboutItems.objects.get(pk=pk)
+    items = AboutItems.objects.get(pk=pk)
     context = {
-        'items': AboutItems.objects.all()
+        'item': items
     }
     if request.method == "POST":
         item = AboutItems.objects.get(pk=pk)
         text_ru = request.POST["text_ru"]
-        image = request.FILES["image"]
+        image = request.FILES.get("image")
         text_uz = request.POST["text_uz"]
         item.text_ru = text_ru
         item.text_uz = text_uz
-        item.image = image
+        if image is not None:
+            item.image = image
         item.save()
         return redirect("about-project")
     return render(request, 'update-about-item.html', context)
@@ -305,20 +325,14 @@ def modal_about(request, pk):
     return redirect('about-title')
 
 
-def activate_title(request, pk):
-    project = About.objects.get(id=pk)
-    if project.is_active == True:
-        project.is_active = False
-        project.save()
-    else:
-        project.is_active = True
-        project.save()
-    return redirect('about-title')
-
-
 def info_view(request):
+    info = Info.objects.all()
+    s_list = []
+    for i in info:
+        s_list.append(i)
     context = {
-        'information': Info.objects.last()
+        'information': Info.objects.last(),
+        's_num': len(s_list),
     }
     return render(request, 'info.html', context)
 
@@ -332,8 +346,7 @@ def create_info(request):
         email = request.POST["email"]
         address_ru = request.POST["address_ru"]
         address_uz = request.POST["address_uz"]
-        latitude = request.POST["latitude"]
-        longtitude = request.POST["longtitude"]
+        map = request.POST["map"]
         logo = request.FILES["logo"]
         instagram = request.POST["instagram"]
         telegram = request.POST["telegram"]
@@ -347,8 +360,7 @@ def create_info(request):
             email=email,
             address_ru=address_ru,
             address_uz=address_uz,
-            latitude=latitude,
-            longtitude=longtitude,
+            map=map,
             logo=logo,
             instagram=instagram,
             telegram=telegram,
@@ -360,17 +372,26 @@ def create_info(request):
     return redirect('info')
 
 
-def update_info(request):
-    info = Info.objects.last()
+def all_info(request):
+    context = {
+        'information': Info.objects.last()
+    }
+    return render(request, 'all-info.html', context)
+
+
+def update_info(request, pk):
+    info = Info.objects.get(pk=pk)
+    context = {
+        'info': info
+    }
     if request.method == "POST":
         website = request.POST["website"]
         phone = request.POST["phone"]
         email = request.POST["email"]
         address_ru = request.POST["address_ru"]
         address_uz = request.POST["address_uz"]
-        logo = request.FILES['logo']
-        latitude = request.POST["latitude"]
-        longtitude = request.POST["longtitude"]
+        logo = request.FILES.get('logo')
+        map = request.POST["map"]
         instagram = request.POST["instagram"]
         telegram = request.POST["telegram"]
         you_tube = request.POST["you_tube"]
@@ -380,16 +401,16 @@ def update_info(request):
         info.email = email
         info.address_ru = address_ru
         info.address_uz = address_uz
-        info.logo = logo
-        info.latitude = latitude
-        info.longtitude = longtitude
+        if logo is not None:
+            info.logo = logo
+        info.map = map
         info.instagram = instagram
         info.telegram = telegram
         info.you_tube = you_tube
         info.facebook = facebook
         info.save()
         return redirect("info")
-    return render(request, 'update-info.html')
+    return render(request, 'update-info.html', context)
 
 
 def task_title(request):
@@ -403,7 +424,7 @@ def task_title(request):
 def update_task_title(request, pk):
     title = Tasks.objects.get(pk=pk)
     context = {
-        'titles': Tasks.objects.all()
+        'titles': title
     }
     if request.method == "POST":
         item = Tasks.objects.get(pk=pk)
@@ -450,7 +471,7 @@ def create_task(request):
 def update_tasks(request, pk):
     task = TaskItems.objects.get(pk=pk)
     context = {
-        'items': TaskItems.objects.all()
+        'items': task
     }
     if request.method == "POST":
         task = TaskItems.objects.get(pk=pk)
@@ -479,7 +500,7 @@ def result_title(request):
 def update_result_title(request, pk):
     title = Results.objects.get(pk=pk)
     context = {
-        'titles': Results.objects.all()
+        'titles': title
     }
     if request.method == "POST":
         item = Results.objects.get(pk=pk)
@@ -526,16 +547,17 @@ def create_result(request):
 def update_result(request, pk):
     result = ResultItems.objects.get(pk=pk)
     context = {
-        'items': ResultItems.objects.all()
+        'items': result
     }
     if request.method == "POST":
         result = ResultItems.objects.get(pk=pk)
         title_ru = request.POST["title_ru"]
         title_uz = request.POST["title_uz"]
-        image = request.FILES["image"]
+        image = request.FILES.get("image")
         result.title_ru = title_ru
         result.title_uz = title_uz
-        result.image = image
+        if image is not None:
+            result.image = image
         result.save()
         return redirect("result-page")
     return render(request, 'update-result.html', context)
@@ -561,12 +583,13 @@ def user_update(request, pk):
         username = request.POST['username']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
-        image = request.FILES['image']
+        image = request.FILES.get('image')
         email = request.POST['email']
         bio = request.POST['bio']
         user.username = username
         user.first_name = first_name
-        user.image = image
+        if image is not None:
+            user.image = image
         user.bio = bio
         user.last_name = last_name
         user.email = email
@@ -579,7 +602,3 @@ def user_update(request, pk):
     }
     return render(request, 'user-update.html', context)
 
-
-def user_delete(request, pk):
-    user = User.objects.get(pk=pk)
-    user.delete()

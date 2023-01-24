@@ -94,15 +94,10 @@ class Info(models.Model):
     email = models.EmailField()
     address_ru = models.CharField(max_length=255)
     address_uz = models.CharField(max_length=255)
-    latitude = models.FloatField()
-    longtitude = models.FloatField()
+    map = models.URLField()
     logo = models.ImageField(upload_to='media/')
     instagram = models.URLField()
     telegram = models.URLField()
     you_tube = models.URLField()
     facebook = models.URLField()
 
-
-class RegistrationTab(models.Model):
-    tab_ru = models.CharField(max_length=50)
-    tab_uz = models.CharField(max_length=50)

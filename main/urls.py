@@ -25,7 +25,6 @@ urlpatterns = [
     path('about-items/', about_items, name='about-items'),
     path('direction/', direction),
     path('direction-items/', direction_items),
-    path('registration-tab/', register_tab),
     path('tasks/', tasks),
     path('task-items/', task_items),
     path('result/', result),

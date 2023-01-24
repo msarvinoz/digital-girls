@@ -4,6 +4,7 @@
 			<main class="content">
 				<div class="container-fluid p-0">
 					<h1 class="h3 mb-3">Banner</h1>
+					{% if s_num < 1 %}
 					<form action="{% url 'create-banner' %}" method="post" enctype="multipart/form-data">
 						<div class="row mb-5">
 							{% csrf_token %}
@@ -24,6 +25,7 @@
 							</div>
 						</div>
 					</form>
+					{% endif %}
 					{% if messages %}
 					<div id="message_container" class="row" style="position: absolute; top: 150px; right: 720px; z-index: 999999999; width: 15%!important; margin: 10px;">
 						{% for message in messages %}
@@ -81,8 +83,23 @@
 												<td><span class="badge badge-warning">not Active</span></td>
 												{% endif %}
 												<td><a href="{% url 'update-banner' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-												<td><a href="{% url 'delete-banner' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-												</td>
+													<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+													<div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">Delete modal</h5>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+																		<input type="hidden" name="modal_id" value="{{ i.id }}">
+																		<button class="btn btn-danger"><a href="{% url 'delete-banner' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+																	</div>
+																</div>
+															</div>
+															</div>
+													</div>
+											</tr>
+							</div>
 											</tr>
 										{% endfor %}
 										</tbody>
@@ -90,7 +107,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 
 

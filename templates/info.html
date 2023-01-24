@@ -2,60 +2,57 @@
 {% block content %}
 			<main class="content">
 				<div class="container-fluid p-0">
+					{% if list_num < 5 %}
 					<h1>Create Info</h1>
 					<form action="{% url 'create-info' %}" method="post" enctype="multipart/form-data">
 						<div class="row mb-5">
 							{% csrf_token %}
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="text" name="title_ru" class="form-control" required placeholder="title_ru">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="text" name="title_uz" class="form-control" required placeholder="title_uz">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="text" name="website" class="form-control" required placeholder="website">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="number" name="phone" class="form-control" required placeholder="phone">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="email" name="email" class="form-control" required placeholder="email">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="text" name="address_ru" class="form-control" required placeholder="address_ru">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="text" name="address_uz" class="form-control" required placeholder="address_uz">
 							</div>
-							<div class="col-xl-2">
-								<input type="number" name="latitude" class="form-control" required placeholder="latitude">
+							<div class="col-xl-2 mb-2">
+								<input type="url" name="map" class="form-control" required placeholder="map">
 							</div>
-							<div class="col-xl-2">
-								<input type="number" name="longtitude" class="form-control" required placeholder="longtitude">
-							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="file" name="logo" required>
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="url" name="instagram" class="form-control" required placeholder="instagram">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="url" name="telegram" class="form-control" required placeholder="telegram">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="url" name="you_tube" class="form-control" required placeholder="you_tube">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<input type="url" name="facebook" class="form-control" required placeholder="facebook">
 							</div>
-							<div class="col-xl-2">
+							<div class="col-xl-2 mb-2">
 								<button class="btn btn-primary">Save</button>
 							</div>
 						</div>
 					</form>
-
-					<div class="row">
-						<div class="col-12 col-lg-12 d-flex">
+					{% endif %}
+					<div class="col-12 col-lg-12 d-flex">
 							<div class="card flex-fill w-100">
 								<div class="card-header">
 									<table id="info1" class="table mb-0">
@@ -66,10 +63,11 @@
 											<th>website</th>
 											<th>phone</th>
 											<th>email</th>
-											<th>address_ru</th>
 											<th>address_uz</th>
+											<th>instagram</th>
 											<th>logo</th>
-
+											<th>edit</th>
+											<th>all info</th>
 										</tr>
 										</thead>
 										<tbody>
@@ -77,49 +75,17 @@
 											<td>{{ information.website }}</td>
 											<td>{{ information.phone }}</td>
 											<td>{{ information.email }}</td>
-											<td>{{ information.address_ru }}</td>
 											<td>{{ information.address_uz }}</td>
-											<td><img src="{{ information.logo.url }}" weight="70px" height="80px" alt=""></td>
-										</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12 col-lg-12 d-flex">
-							<div class="card flex-fill w-100">
-								<div class="card-header">
-									<table id="info2" class="table mb-0">
-										<thead>
-										<tr>
-											<th>latitude</th>
-										    <th>longtitude</th>
-										    <th>instagram</th>
-										    <th>telegram</th>
-										    <th>you tube</th>
-										    <th>facebook</th>
-
-										</tr>
-										</thead>
-										<tbody>
-										<tr>
-											<td>{{ information.latitude }}</td>
-											<td>{{ information.longtitude }}</td>
 											<td>{{ information.instagram }}</td>
-											<td>{{ information.telegram }}</td>
-											<td>{{ information.you_tube }}</td>
-											<td>{{ information.facebook }}</td>
+											<td><img src="{{ information.logo.url }}" weight="70px" height="80px" alt=""></td>
+											<td><a href="{% url 'update-info' information.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a></td>
+											<td><a href="{% url 'all-info' %}" class="btn btn-primary"><i class="fas fa-edit"></i>More info details</a></td>
 										</tr>
 										</tbody>
 									</table>
-									<br>
-									<h2><a href="{% url 'update-info' %}" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a></h2>
 								</div>
 							</div>
 						</div>
-					</div>
 				</div>
 			</main>
 {% endblock content %}

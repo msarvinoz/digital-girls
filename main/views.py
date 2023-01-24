@@ -28,8 +28,8 @@ def about_items(request):
 @api_view(['GET'])
 def about(request):
     try:
-        about_us = About.objects.all().filter(is_active=True).order_by('-id')[:4]
-        ser = AboutSerializer(about_us, many=True)
+        about_us = About.objects.filter(is_active=True).last()
+        ser = AboutSerializer(about_us)
         return Response(ser.data)
     except Exception as err:
         return Response('something went wrong')
@@ -38,11 +38,15 @@ def about(request):
 @api_view(['GET'])
 def direction_items(request):
     try:
-        courses = DirectionItems.objects.all().order_by('id')[:5]
+        courses = DirectionItems.objects.all().order_by('-id')
         ser = DirectionItemsSerializer(courses, many=True)
         return Response(ser.data)
     except Execption as err:
-        return Response('something went wrong')
+        data = {
+            "status": False,
+            "error": f'{err}'
+        }
+        return Response(data)
 
 
 @api_view(['GET'])
@@ -113,19 +117,10 @@ def register(request):
     email = request.POST.get('email')
     address = request.POST.get('address')
     phone = request.POST.get('phone')
-    if Register.objects.filter(email=email).exists():
-        return Response("you've signed up")
+    if Register.objects.filter(email=email, phone=phone).exists():
+        return Response("you've applied")
     else:
         registration = Register.objects.create(name=name, surname=surname, birth=birth, email=email, address=address, phone=phone)
         registration.save()
         return Response('successfully submitted!')
-
-
-@api_view(['GET'])
-def register_tab(request):
-    try:
-        tab = RegistrationTab.objects.last()
-        return redirect(direction_items)
-    except Execption as err:
-        return Response('something went wrong')
 

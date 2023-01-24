@@ -35,51 +35,62 @@
 			{% endfor %}
 		</div>
 		{% endif %}
-		<script>
-			let message_ele = document.getElementById("message_container");
-				setTimeout(function(){
-									   message_ele.style.display = "none";
-					 //  message_ele.style.height = '10vh'
-				}, 3000);
-				// Timeout is 1 sec, you can change it
-			</script>
-<div class="row">
-	<div class="col-12 col-lg-12 d-flex">
-		<div class="card flex-fill w-100">
-			<div class="card-header">
-				<table id="approaches" class="table mb-0">
-					<h2>Approaches</h2>
-					<div class="card-body">
-							<thead>
-							<tr>
-								<th>direction ru</th>
-								<th>direction uz</th>
-								<th>image</th>
-								<th>edit</th>
-								<th>delete</th>
-							</tr>
-							</thead>
-							<tbody>
-							{% for i in courses %}
-							<tr>
-								<td>{{i.directions_ru}}</td>
-								<td>{{i.directions_uz}}</td>
-								<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
-								<td><a href="{% url 'update-approach' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-								<td><a href="{% url 'delete-approach' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-								</td>
-							</tr>
-							{% endfor %}
-							</tbody>
+		<div class="row">
+				<div class="col-12 col-lg-12 d-flex">
+					<div class="card flex-fill w-100">
+						<div class="card-header">
+							<table id="approaches" class="table mb-0">
+								<h2>Approaches</h2>
+								<div class="card-body">
+										<thead>
+										<tr>
+											<th>direction ru</th>
+											<th>direction uz</th>
+											<th>image</th>
+											<th>edit</th>
+											<th>delete</th>
+										</tr>
+										</thead>
+										<tbody>
+										{% for i in courses %}
+										<tr>
+											<td>{{i.directions_ru}}</td>
+											<td>{{i.directions_uz}}</td>
+											<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
+											<td><a href="{% url 'update-approach' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
+											<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+													<div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">Delete modal</h5>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+																		<input type="hidden" name="modal_id" value="{{ i.id }}">
+																		<button class="btn btn-danger"><a href="{% url 'delete-approach' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+																	</div>
+																</div>
+															</div>
+															</div>
+													</div>
+										</tr>
+										{% endfor %}
+										</tbody>
+								</div>
+									</table>
+								</div>
+							</table>
+						</div>
 					</div>
-						</table>
-					</div>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-
+				</div>
 	</div>
 </main>
+<script>
+	let message_ele = document.getElementById("message_container");
+		setTimeout(function(){
+							   message_ele.style.display = "none";
+			 //  message_ele.style.height = '10vh'
+		}, 3000);
+		// Timeout is 1 sec, you can change it
+</script>
 {% endblock content %}

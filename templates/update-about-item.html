@@ -7,10 +7,10 @@
       <div class="row mb-5">
         {% csrf_token %}
         <div class="col-xl-2">
-          <input type="text" name="text_ru" class="form-control" required placeholder="text_ru">
+          <input type="text" name="text_ru" class="form-control" value="{{ item.text_ru }}" required placeholder="text_ru">
         </div>
         <div class="col-xl-2">
-          <input type="text" name="text_uz" class="form-control" required placeholder="text_uz">
+          <input type="text" name="text_uz" class="form-control" value="{{ item.text_uz }}" required placeholder="text_uz">
         </div>
         <div class="col-xl-2">
           <input type="file" name="image">

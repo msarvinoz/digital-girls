@@ -60,6 +60,11 @@
 									<table id="application" class="table mb-0">
 										<h2>Applications</h2>
 										<br>
+										<br>
+										<form class="{% url 'search-applicants' %}" method="post">
+											<input name="search" type="text" placeholder="Search applicants">
+										</form>
+										<br>
 											<thead>
 												<tr>
 													<th>Number</th>

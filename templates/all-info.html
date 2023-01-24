@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 col-xl-3">
+        <div class="my-10 my-md-2">
+            <div class="card-body text-center">
+                <h4>Logo: </h4>
+                <img src="{{ information.logo.url }}" weight="390px" height="380px" alt="">
+            </div>
+                <br>
+            <div class="card-body text-right">
+                <h4>Map</h4>
+                <div style="width: 700px;">
+                   <iframe src="{{ information.map }}" width="100%" height="200" frameborder="0" style="border:0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-xl-0">
+        <div class="card">
+            <ul class="list-group card-list-group">
+                <li class="list-group-item py-5">
+                    <div class="media">
+                        <div class="media-body">
+                            <div class="media-heading">
+                                <h4 class="mb-3">Title ru: {{ information.title_ru }}</h4>
+                                <h4 class="mb-3">Title uz: {{ information.title_uz }}</h4>
+                                <h4 class="mb-3">Website: {{ information.website }}</h4>
+                                <h4 class="mb-3">Phone: {{ information.phone }}</h4>
+                                <h4 class="mb-3"><a class="mb-4" href="mailto:{{user.email}}">Email: {{information.email}}</a></h4>
+                                <h4 class="mb-3">Address uz: {{information.address_uz}}</h4>
+                                <h4 class="mb-4">Address ru: {{information.address_ru}}</h4>
+                                <h4 class="mb-4">Instagram: {{ information.instagram }}</h4>
+                                <h4 class="mb-4">Telegram: {{ information.telegram }}</h4>
+                                <h4 class="mb-4">You tube: {{ information.you_tube }}</h4>
+                                <h4 class="mb-4">Facebook: {{ information.facebook }}</h4>
+                                <div class="d-flex">
+                                    <h2><a href="{% url 'update-info' information.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -48,12 +48,12 @@
 				</a>
 
 				<ul class="sidebar-nav">
-					<li class="sidebar-item">
+					<li class="sidebar-item {% if request.path == '/admin-page/' %} active {% endif %}">
 						<a href="{% url 'dashboard' %}" class="sidebar-link">
 					  		<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
 						</a>
 					</li>
-					<li class="sidebar-item">
+					<li class="sidebar-item {% if request.path == '/banner/' %} active {% endif %}">
 						<a href="{% url 'banner' %}" class="sidebar-link">
 					  		<i class="align-middle" data-feather="columns"></i> <span class="align-middle">Banner</span>
 						</a>
@@ -63,8 +63,8 @@
 						  <i class="align-middle" data-feather="layout"></i><span class="align-middle">About</span>
 						</a>
 						<ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'about-title' %}">title</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'about-project' %}">project</a></li>
+							<li class="sidebar-item {% if request.path == '/about-title/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'about-title' %}">title</a></li>
+							<li class="sidebar-item {% if request.path == '/about-project/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'about-project' %}">project</a></li>
 						</ul>
 					</li>
 					<li class="sidebar-item">
@@ -72,8 +72,8 @@
 						  <i class="align-middle" data-feather="layout"></i><span class="align-middle">Approach</span>
 						</a>
 						<ul id="approach" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'direction-title' %}">titles</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'direction-courses' %}">items</a></li>
+							<li class="sidebar-item {% if request.path == '/direction-title/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'direction-title' %}">titles</a></li>
+							<li class="sidebar-item {% if request.path == '/direction-courses/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'direction-courses' %}">items</a></li>
 						</ul>
 					</li>
 					<li class="sidebar-item">
@@ -81,8 +81,8 @@
 						  <i class="align-middle" data-feather="edit"></i><span class="align-middle">Tasks</span>
 						</a>
 						<ul id="tasks" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'task-title' %}">titles</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'task-page' %}">items</a></li>
+							<li class="sidebar-item {% if request.path == '/task-titles/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'task-title' %}">titles</a></li>
+							<li class="sidebar-item {% if request.path == '/task-page/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'task-page' %}">items</a></li>
 						</ul>
 					</li>
 					<li class="sidebar-item">
@@ -90,18 +90,13 @@
 						  <i class="align-middle" data-feather="gift"></i><span class="align-middle">Results</span>
 						</a>
 						<ul id="results" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'result-title' %}">titles</a></li>
-							<li class="sidebar-item"><a class="sidebar-link" href="{% url 'result-page' %}">project</a></li>
+							<li class="sidebar-item {% if request.path == '/result-title/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'result-title' %}">titles</a></li>
+							<li class="sidebar-item {% if request.path == '/result-page/' %} active {% endif %}"><a class="sidebar-link" href="{% url 'result-page' %}">project</a></li>
 						</ul>
 					</li>
 					<li class="sidebar-item">
 						<a href="{% url 'info' %}" class="sidebar-link">
 					  		<i class="align-middle" data-feather="align-center"></i> <span class="align-middle">Information</span>
-						</a>
-					</li>
-					<li class="sidebar-item">
-						<a href="{% url 'user-detail' user.pk %}" class="sidebar-link">
-					  		<i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
 						</a>
 					</li>
 				</ul>
@@ -114,21 +109,17 @@
 				<a class="sidebar-toggle d-flex mr-2">
           <i class="hamburger align-self-center"></i>
         </a>
-
-				<form class="form-inline d-none d-sm-inline-block">
-					<input class="form-control form-control-no-border mr-sm-2" type="text" placeholder="Search projects..." aria-label="Search">
-				</form>
-
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="{% url 'user-detail' user.pk %}" data-toggle="dropdown">
                 				{% if user.image %}
-								<h4>{{ user.username }}<img src="{{ user.image.url }}" class="avatar img-fluid rounded-circle mr-1" alt="{{ user.username}}"></h4>
+								<img src="{{ user.image.url }}" class="avatar img-fluid rounded-circle mr-1" alt="{{ user.username}}">
 								{% endif %}
               				</a>
 							<div class="dropdown-menu dropdown-menu-right">
 								<a class="dropdown-item" href="{% url 'user-detail' user.pk %}">Profile</a>
+								<a class="dropdown-item" href="{% url 'log-out' user.pk %}">Log out</a>
 							</div>
 						</li>
 					</ul>

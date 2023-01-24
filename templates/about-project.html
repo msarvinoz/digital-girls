@@ -34,7 +34,6 @@
 						<th>text_ru</th>
 						<th>text_uz</th>
 						<th>image</th>
-						<th>edit</th>
 						<th>delete</th>
 					</tr>
 					</thead>
@@ -44,8 +43,22 @@
 						<td>{{ i.text_ru}}</td>
 						<td>{{ i.text_uz }}</td>
 						<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
-						<td><a href="{% url 'update-about-item' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-						<td><a href="{% url 'delete-about-item' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+						<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+							 <div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+								 <div class="modal-dialog" role="document">
+									 <div class="modal-content">
+										 <div class="modal-header">
+											 <h5 class="modal-title">Delete modal</h5>
+											 <div class="modal-footer">
+												 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+												 <input type="hidden" name="modal_id" value="{{ i.id }}">
+												 <button class="btn btn-danger"><a href="{% url 'delete-about-item' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+											 </div>
+										 </div>
+									 </div>
+								 </div>
+							 </div>
+						</td>
 					</tr>
 					{% endfor %}
 					</tbody>
@@ -66,9 +79,9 @@
 					<br>
 					<thead>
 					<tr>
+						<th>image</th>
 						<th>text_ru</th>
 						<th>text_uz</th>
-						<th>image</th>
 						<th>edit</th>
 						<th>delete</th>
 					</tr>
@@ -76,11 +89,25 @@
 					<tbody>
 					{% for i in active %}
 					<tr>
+						<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
 						<td>{{ i.text_ru}}</td>
 						<td>{{ i.text_uz }}</td>
-						<td><img src="{{ i.image.url }}" weight="70px" height="80px"></td>
 						<td><a href="{% url 'update-about-item' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-						<td><a href="{% url 'delete-about-item' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+						<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deletingModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+						<div class="modal modal-colored modal-warning fade" id="deletingModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Delete modal</h5>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+											<input type="hidden" name="modal_id" value="{{ i.id }}">
+											<button class="btn btn-danger"><a href="{% url 'delete-about-item' i.id %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						</td>
 					</tr>
 					{% endfor %}

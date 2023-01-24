@@ -7,10 +7,10 @@
       <div class="row mb-5">
         {% csrf_token %}
         <div class="col-xl-2">
-          <input type="text" name="requirements_ru" class="form-control" required placeholder="requirements_ru">
+          <input type="text" name="requirements_ru" class="form-control" value="{{items.requirements_ru}}" required placeholder="requirements_ru">
         </div>
         <div class="col-xl-2">
-          <input type="text" name="requirements_uz" class="form-control" required placeholder="requirements_uz">
+          <input type="text" name="requirements_uz" class="form-control" value="{{items.requirements_uz}}" required placeholder="requirements_uz">
         </div>
         <div class="col-xl-2">
           <button class="btn btn-primary">Save</button>

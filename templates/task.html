@@ -73,7 +73,21 @@
 												<td>{{i.requirements_ru}}</td>
 												<td>{{i.requirements_uz}}</td>
 												<td><a href="{% url 'update-task' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-												<td><a href="{% url 'delete-task' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+												<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+													<div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">Delete modal</h5>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+																		<input type="hidden" name="modal_id" value="{{ i.id }}">
+																		<button class="btn btn-danger"><a href="{% url 'delete-task' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+																	</div>
+																</div>
+															</div>
+															</div>
+													</div>
 												</td>
 											</tr>
 										{% endfor %}

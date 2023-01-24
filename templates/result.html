@@ -3,7 +3,6 @@
 			<main class="content">
 				<div class="container-fluid p-0">
 					<h1 class="h3 mb-3">Results</h1>
-					{% if list_num < 5 %}
 					<form action="{% url 'create-result' %}" method="post" enctype="multipart/form-data">
 						<div class="row mb-5">
 							{% csrf_token %}
@@ -21,9 +20,6 @@
 							</div>
 						</div>
 					</form>
-					{% else %}
-					<h1>you can't add results anymore, try to change</h1>
-					{% endif %}
 					{% if messages %}
 					<div id="message_container" class="row" style="position: absolute; top: 150px; right: 720px; z-index: 999999999; width: 15%!important; margin: 10px;">
 						{% for message in messages %}
@@ -72,8 +68,21 @@
 												<td>{{i.title_uz}}</td>
 												<td><img src="{{i.image.url}}" weight="70px" height="80px" alt=""></td>
 												<td><a href="{% url 'update-result' i.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
-												<td><a href="{% url 'delete-result' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-												</td>
+												<td><button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button></td>
+													<div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">Delete modal</h5>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+																		<input type="hidden" name="modal_id" value="{{ i.id }}">
+																		<button class="btn btn-danger"><a href="{% url 'delete-result' i.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
+																	</div>
+																</div>
+															</div>
+															</div>
+													</div>
 											</tr>
 										{% endfor %}
 										</tbody>

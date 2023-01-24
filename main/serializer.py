@@ -68,8 +68,3 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['title_ru', 'title_uz', 'status']
 
 
-class RegistrationTabSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RegistrationTab
-        fields = '__all__'
-
