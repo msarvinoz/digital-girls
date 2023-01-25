@@ -10,9 +10,9 @@ def main_page(request):
     try:
         mainpage = MainPage.objects.last()
         ser = MainPageSerializer(mainpage)
-        return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+        return Response(ser.data, many=True)
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -21,8 +21,8 @@ def about_items(request):
         about_item = AboutItems.objects.all().order_by('-id')[:4]
         ser = AboutItemsSerializer(about_item, many=True)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -32,7 +32,7 @@ def about(request):
         ser = AboutSerializer(about_us)
         return Response(ser.data)
     except Exception as err:
-        return Response('something went wrong')
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -41,12 +41,8 @@ def direction_items(request):
         courses = DirectionItems.objects.all().order_by('-id')
         ser = DirectionItemsSerializer(courses, many=True)
         return Response(ser.data)
-    except Execption as err:
-        data = {
-            "status": False,
-            "error": f'{err}'
-        }
-        return Response(data)
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -55,8 +51,8 @@ def direction(request):
         direction = Direction.objects.last()
         ser = DirectionSerializer(direction)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -65,8 +61,8 @@ def task_items(request):
         task = TaskItems.objects.all().order_by('-id')[:10]
         ser = TaskItemsSerializer(task, many=True)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -75,8 +71,8 @@ def tasks(request):
         task = Tasks.objects.last()
         ser = TasksSerializer(task)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -85,8 +81,8 @@ def results_items(request):
         result = ResultItems.objects.all().order_by('-id')[:5]
         ser = ResultItemsSerializer(result, many=True)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -95,8 +91,8 @@ def result(request):
         results = Results.objects.last()
         ser = ResultsSerializer(results)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['GET'])
@@ -105,8 +101,8 @@ def info(request):
         contact = Info.objects.last()
         ser = InfoSerializer(contact)
         return Response(ser.data)
-    except Execption as err:
-        return Response('something went wrong')
+    except Exception as err:
+        return Response({'error': f'{err}'})
 
 
 @api_view(['POST'])
@@ -114,7 +110,7 @@ def register(request):
     name = request.POST.get('name')
     surname = request.POST.get('surname')
     birth = request.POST.get('birth')
-    email = request.POST.get('email')
+    email = request.POST.get('email')2
     address = request.POST.get('address')
     phone = request.POST.get('phone')
     if Register.objects.filter(email=email, phone=phone).exists():
