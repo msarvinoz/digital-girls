@@ -1,11 +1,22 @@
+from calendar import calendar
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from main.models import *
-# from main.serializer import MainPageSerializer
 from django.contrib import messages
+from main.serializer import RegisterSerializer
+from datetime import datetime, timedelta
+from django.db.models import Count
+from django.db.models.functions import ExtractDay, ExtractMonth
+import calendar
+
+
+def applicants_data(request):
+    dataset = Register.objects.all()
+    ser = RegisterSerializer('json', dataset)
+    return JsonResponse(ser.data, safe=False)
 
 
 def signin_view(request):
@@ -31,23 +42,50 @@ def logout_view(request, pk):
 
 
 def home_view(request):
+    today = datetime.now() - timedelta(days=1)
+    month = datetime.today() - timedelta(days=30)
+    day = Register.objects.filter(created__gte=today).count()
+    months = Register.objects.filter(created__gte=month).count()
+    qs = Register.objects.filter(
+        created__gte=month
+    ).annotate(
+        day=ExtractDay("created"),
+        mon=ExtractMonth('created'),
+    ).values(
+        'day', 'mon'
+    ).annotate(
+        n=Count('pk')
+    ).order_by('mon')
+    mon_list = []
+    for i in qs:
+        i['mon'] = (calendar.month_abbr[i['mon']])
+        if len(mon_list) >= 30:
+            del mon_list[0]
+            mon_list.append(i)
+        else:
+            mon_list.append(i)
+    print(len(mon_list))
     context = {
         'application_list': Register.objects.all(),
         'register_count': Register.objects.all().count(),
         'direction_list': DirectionItems.objects.all(),
         'direction_count': DirectionItems.objects.all().count(),
         'task_list': TaskItems.objects.all(),
-        'task_count': TaskItems.objects.all().count()
+        'task_count': TaskItems.objects.all().count(),
+        'day': day,
+        'month': months,
+        "qs": mon_list,
     }
+
     return render(request, 'dashboard-default.html', context)
 
 
 def search_applicants(request):
-    if request.method == 'POST':
-        search = request.POST['search']
-        s = Register.objects.filter(name_icontains=search)
-        register = Register.objects.all()
-    return redirect('dashboard')
+    query = request.GET.get('query', None)
+    if query:
+        s = Register.objects.filter(name__icontains=query)
+    print(323)
+    return render(request, 'search-applicant.html', context = {'s': s})
 
 
 def change_applicant_status(request, pk):
@@ -65,11 +103,28 @@ def change_applicant_status(request, pk):
 
 
 def direction_title(request):
+    titles = Direction.objects.all()
+    s_list = []
+    for i in titles:
+        s_list.append(i)
     context = {
-        "titles": Direction.objects.all().order_by('-id'),
+        "titles": titles,
         "active_titles": Direction.objects.last(),
+        's_num': len(s_list)
     }
     return render(request, 'direction-title.html', context)
+
+
+def create_direction_title(request):
+    if request.method == "POST":
+        title_ru = request.POST.get("title_ru")
+        title_uz = request.POST.get("title_uz")
+        Direction.objects.create(
+            title_ru=title_ru,
+            title_uz=title_uz,
+        )
+        return redirect("direction-title")
+    return redirect("direction-title")
 
 
 def update_direction_title(request, pk):
@@ -136,10 +191,11 @@ def update_direction(request, pk):
         course = DirectionItems.objects.get(pk=pk)
         directions_ru = request.POST["directions_ru"]
         directions_uz = request.POST["directions_uz"]
-        image = request.FILES['image']
+        image = request.FILES.get('image')
         course.directions_ru = directions_ru
         course.directions_uz = directions_uz
-        course.image = image
+        if image is not None:
+            course.image = image
         if directions_ru and directions_uz is not None:
             messages.success(request, 'successfully created!')
             course.save()
@@ -264,13 +320,13 @@ def update_banner_view(request, pk):
         item = MainPage.objects.get(pk=pk)
         title = request.POST["title"]
         image = request.FILES.get('image')
-        if image is not None:
-            item.image = image
         text_uz = request.POST["text_uz"]
         text_ru = request.POST["text_ru"]
         item.title = title
         item.text_ru = text_ru
         item.text_uz = text_uz
+        if image is not None:
+            item.image = image
         item.save()
         return redirect("banner")
     return render(request, 'update-banner.html', context)
@@ -414,11 +470,28 @@ def update_info(request, pk):
 
 
 def task_title(request):
+    titles = Tasks.objects.all()
+    s_list = []
+    for i in titles:
+        s_list.append(i)
     context = {
-        "titles": Tasks.objects.all().order_by('-id'),
+        "titles": titles,
         "active_titles": Tasks.objects.last(),
+        's_num': len(s_list)
     }
     return render(request, 'task-title.html', context)
+
+
+def create_task_title(request):
+    if request.method == "POST":
+        title_ru = request.POST.get("title_ru")
+        title_uz = request.POST.get("title_uz")
+        Tasks.objects.create(
+            title_ru=title_ru,
+            title_uz=title_uz,
+        )
+        return redirect("task-title")
+    return redirect("task-title")
 
 
 def update_task_title(request, pk):
@@ -490,11 +563,28 @@ def delete_task(request, pk):
 
 
 def result_title(request):
+    titles = Results.objects.all()
+    s_list = []
+    for i in titles:
+        s_list.append(i)
     context = {
-        "titles": Results.objects.all().order_by('-id'),
+        "titles": titles,
         "active_titles": Results.objects.last(),
+        's_num': len(s_list)
     }
     return render(request, 'result-title.html', context)
+
+
+def create_result_title(request):
+    if request.method == "POST":
+        title_ru = request.POST.get("title_ru")
+        title_uz = request.POST.get("title_uz")
+        Results.objects.create(
+            title_ru=title_ru,
+            title_uz=title_uz,
+        )
+        return redirect("result-title")
+    return redirect("result-title")
 
 
 def update_result_title(request, pk):

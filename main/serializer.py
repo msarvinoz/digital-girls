@@ -65,6 +65,6 @@ class InfoSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Register
-        fields = ['title_ru', 'title_uz', 'status']
+        exclude = ['title_ru', 'title_uz']
 
 

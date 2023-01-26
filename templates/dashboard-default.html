@@ -14,7 +14,9 @@
 										</div>
 										<div class="media-body">
 											<a href="#application"><h3>Applicants</h3></a>
-											<h4 class="mb-2">{{ register_count }}</h4>
+											<h4 class="mb-2">Total: {{ register_count }}</h4>
+											<h4 class="mb-2">Today: {{ day }}</h4>
+											<h4 class="mb-2">Monthly: {{ month }}</h4>
 										</div>
 									</div>
 								</div>
@@ -51,7 +53,44 @@
 							</div>
 						</div>
 					</div>
+            <div class="col-12 col-lg-10 d-flex">
+              <div class="card flex-fill w-100">
+                <div class="card-header">
+                  <span class="badge badge-primary float-right">Monthly</span>
+                  <h5 class="card-title mb-0">Application Statistics</h5>
+                </div>
+                <div class="card-body">
+                  <div class="chart chart-lg">
+                    <canvas id="myChart"></canvas>
+                  </div>
+                  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+                  <script>
+                    const ctx = document.getElementById('myChart');
+
+                    new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                      labels: [{% for i in qs %} "{{ i.day }} {{ i.mon }}", {% endfor %}],
+                      datasets: [{
+                      label: '# of Votes',
+                      data: [{% for x in qs %} {{ x.n }}, {% endfor %}],
+                      borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                      y: {
+                        beginAtZero: true
+                      }
+                      }
+                    }
+                    });
+                  </script>
+
+                </div>
+              </div>
+            </div>
 					<div class="row">
 						<div class="col-12 col-lg-12 d-flex">
 							<div class="card flex-fill w-100">
@@ -61,9 +100,7 @@
 										<h2>Applications</h2>
 										<br>
 										<br>
-										<form class="{% url 'search-applicants' %}" method="post">
-											<input name="search" type="text" placeholder="Search applicants">
-										</form>
+										<a href="{% url 'search-applicants' %}">Search</a>
 										<br>
 											<thead>
 												<tr>
@@ -73,8 +110,7 @@
 													<th>Phone</th>
 													<th>Email</th>
 													<th>Birth</th>
-													<th>Status</th>
-													<th>Change status</th>
+													<th>Applied in</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -93,7 +129,7 @@
 													{% elif i.status == 3 %}
 													<td class="btn btn-danger">Denied</td>
 													{% endif %}
-													<td><a href="{% url 'change-applicant-status' i.pk %}"><i class="btn btn-primary">Change</i></a></td>
+													<td>{{ i.created }}</td>
 												</tr>
 											{% endfor %}
 											</tbody>

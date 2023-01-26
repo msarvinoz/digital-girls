@@ -26,7 +26,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary">Save changes</button>
+							<button type="submit" class="btn btn-primary">Save</button>
 						</div>
 					</div>
 				</form>
@@ -89,21 +89,6 @@
 												</div>
 											</div>
 										</div>
-										<button type="button" class="btn danger" data-toggle="modal" data-target="#deleteModal{{i.id}}"><i class="fas fa-trash"></i></button>
-													<div class="modal modal-colored modal-warning fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-hidden="true">
-														<div class="modal-dialog" role="document">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<h5 class="modal-title">Delete modal</h5>
-																	<div class="modal-footer">
-																		<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-																		<input type="hidden" name="modal_id" value="{{ i.id }}">
-																		<button class="btn btn-danger"><a href="{% url 'del-ab-tit' i.id %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>Delete</button>
-																	</div>
-																</div>
-															</div>
-															</div>
-													</div>
 									</div>
 								</div>
 							</div>
@@ -113,10 +98,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-			</div>
-		</div>
-	</div>
 </main>
 {% endblock content %}
 

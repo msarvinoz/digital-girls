@@ -27,7 +27,7 @@ class MainPage(models.Model):
 class About(models.Model):
     title_ru = models.CharField(max_length=100)
     title_uz = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
 
 class AboutItems(models.Model):
@@ -68,11 +68,7 @@ class Register(models.Model):
     email = models.EmailField()
     address = models.CharField(max_length=255)
     phone = models.IntegerField()
-    status = models.IntegerField(default=1, choices=(
-        (1, 'In progress'),
-        (2, 'Accepted'),
-        (3, 'Denied'),
-    ))
+    created = models.DateField(auto_now_add=True)
 
 
 class Results(models.Model):

@@ -2,7 +2,7 @@
 {% block content %}
 			<main class="content">
 				<div class="container-fluid p-0">
-					{% if list_num < 5 %}
+					{% if s_num < 1 %}
 					<h1>Create Info</h1>
 					<form action="{% url 'create-info' %}" method="post" enctype="multipart/form-data">
 						<div class="row mb-5">
@@ -71,6 +71,7 @@
 										</tr>
 										</thead>
 										<tbody>
+										{% if information %}
 										<tr>
 											<td>{{ information.website }}</td>
 											<td>{{ information.phone }}</td>
@@ -81,6 +82,7 @@
 											<td><a href="{% url 'update-info' information.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a></td>
 											<td><a href="{% url 'all-info' %}" class="btn btn-primary"><i class="fas fa-edit"></i>More info details</a></td>
 										</tr>
+										{% endif %}
 										</tbody>
 									</table>
 								</div>

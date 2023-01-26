@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="toolbar"><form id="changelist-search" method="get">
+<div><!-- DIV needed for valid HTML -->
+<input type="text" size="40" name="query" value="" id="searchbar" autofocus>
+<input type="submit" value="Search">
+</div>
+</form></div>
+<br>
+<br>
+									<table id="application" class="table mb-0">
+										<h2>Result</h2>
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Surname</th>
+													<th>Phone</th>
+													<th>Email</th>
+													<th>Birth</th>
+													<th>Applied in</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for i in s %}
+												<tr>
+													<td>{{ i.name}}</td>
+													<td>{{ i.surname }}</td>
+													<th>{{ i.phone }}</td>
+													<td>{{ i.email }}</td>
+													<td>{{ i.birth }}</td>
+													<td>{{ i.created }}</td>
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+{% endblock content %}

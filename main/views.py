@@ -10,7 +10,7 @@ def main_page(request):
     try:
         mainpage = MainPage.objects.last()
         ser = MainPageSerializer(mainpage)
-        return Response(ser.data, many=True)
+        return Response(ser.data)
     except Exception as err:
         return Response({'error': f'{err}'})
 
@@ -28,7 +28,7 @@ def about_items(request):
 @api_view(['GET'])
 def about(request):
     try:
-        about_us = About.objects.filter(is_active=True).last()
+        about_us = About.objects.last()
         ser = AboutSerializer(about_us)
         return Response(ser.data)
     except Exception as err:
@@ -110,7 +110,7 @@ def register(request):
     name = request.POST.get('name')
     surname = request.POST.get('surname')
     birth = request.POST.get('birth')
-    email = request.POST.get('email')2
+    email = request.POST.get('email')
     address = request.POST.get('address')
     phone = request.POST.get('phone')
     if Register.objects.filter(email=email, phone=phone).exists():
