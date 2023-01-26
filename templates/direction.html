@@ -35,6 +35,14 @@
 			{% endfor %}
 		</div>
 		{% endif %}
+		<script>
+				let message_ele = document.getElementById("message_container");
+					setTimeout(function(){
+					   message_ele.style.display = "none";
+					  //  message_ele.style.height = '10vh'
+					}, 3000);
+					// Timeout is 1 sec, you can change it
+				</script>
 		<div class="row">
 				<div class="col-12 col-lg-12 d-flex">
 					<div class="card flex-fill w-100">
@@ -75,22 +83,45 @@
 													</div>
 										</tr>
 										{% endfor %}
+
 										</tbody>
 								</div>
 									</table>
 								</div>
-							</table>
+								{% if course.paginator.num_pages > 1 %}
+								<div class="card-footer d-flex justify-content-end">
+								  <nav aria-label="Page navigation">
+									<ul class="pagination">
+									  {% if course.has_previous %}
+										<li class="page-item">
+										  <a class="page-link" href="?page={{ course.previous_page_number }}">
+											Previous
+										  </a>
+										</li>
+									  {% endif %}
+									  {% for num in course.paginator.page_range %}
+									  {% if num == course.number %}
+									  <li class="page-item active">
+										<a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+									  </li>
+									  {% elif num > course.number|add:'-2' and num < course.number|add:'2' %}
+									  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+									  {% endif %}
+									  {% endfor %}
+									  {% if course.has_next %}
+									  <li class="page-item">
+										<a class="page-link" href="?page={{ course.next_page_number }}">
+										  Next
+										</a>
+									  </li>
+									  {% endif %}
+									</ul>
+								  </nav>
+								</div>
+							  {% endif %}
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
 	</div>
 </main>
-<script>
-	let message_ele = document.getElementById("message_container");
-		setTimeout(function(){
-							   message_ele.style.display = "none";
-			 //  message_ele.style.height = '10vh'
-		}, 3000);
-		// Timeout is 1 sec, you can change it
-</script>
 {% endblock content %}

@@ -14,6 +14,12 @@
 								<input type="text" name="title_uz" class="form-control" required placeholder="title uz">
 							</div>
 							<div class="col-xl-2">
+								<input type="text" name="text_ru" class="form-control" required placeholder="text ru">
+							</div>
+							<div class="col-xl-2">
+								<input type="text" name="text_uz" class="form-control" required placeholder="text uz">
+							</div>
+							<div class="col-xl-2">
 							<div class="col-xl-2">
 								<button class="btn btn-primary">Save</button>
 							</div>
@@ -33,6 +39,8 @@
 							<tr>
 								<th>title_ru</th>
 								<th>title_uz</th>
+								<th>text_ru</th>
+								<th>text_uz</th>
 								<th>edit</th>
 							</tr>
 							</thead>
@@ -41,6 +49,8 @@
 							<tr>
 								<td>{{ active_titles.title_ru }}</td>
 								<td>{{ active_titles.title_uz }}</td>
+								<td>{{ active_titles.text_ru }}</td>
+								<td>{{ active_titles.text_uz }}</td>
 								<td><a href="{% url 'update-result-title' active_titles.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a></td>
 								</td>
 							</tr>

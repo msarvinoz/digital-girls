@@ -96,10 +96,8 @@
 																	</div>
 																</div>
 															</div>
-															</div>
+														</div>
 													</div>
-											</tr>
-							</div>
 											</tr>
 										{% endfor %}
 										</tbody>
@@ -108,23 +106,7 @@
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</main>
-
 {% endblock content %}
 
-{% block script %}
-	<script>
-		$(function() {
-			// Datatables clients
-			$("#datatables-clients").DataTable({
-				responsive: true,
-				order: [
-					[1, "asc"]
-				]
-			});
-		});
-	</script>
-{% endblock script %}

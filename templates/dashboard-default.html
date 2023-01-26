@@ -15,7 +15,6 @@
 										<div class="media-body">
 											<a href="#application"><h3>Applicants</h3></a>
 											<h4 class="mb-2">Total: {{ register_count }}</h4>
-											<h4 class="mb-2">Today: {{ day }}</h4>
 											<h4 class="mb-2">Monthly: {{ month }}</h4>
 										</div>
 									</div>
@@ -53,7 +52,7 @@
 							</div>
 						</div>
 					</div>
-            <div class="col-12 col-lg-10 d-flex">
+            <div class="col-12 col-lg-12 d-flex">
               <div class="card flex-fill w-100">
                 <div class="card-header">
                   <span class="badge badge-primary float-right">Monthly</span>
@@ -135,6 +134,37 @@
 											</tbody>
 										</table>
 								</div>
+								{% if application.paginator.num_pages > 1 %}
+								<div class="card-footer d-flex justify-content-end">
+								  <nav aria-label="Page navigation">
+									<ul class="pagination">
+									  {% if application.has_previous %}
+										<li class="page-item">
+										  <a class="page-link" href="?page={{ application.previous_page_number }}">
+											Previous
+										  </a>
+										</li>
+									  {% endif %}
+									  {% for num in application.paginator.page_range %}
+									  {% if num == application.number %}
+									  <li class="page-item active">
+										<a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+									  </li>
+									  {% elif num > application.number|add:'-2' and num < application.number|add:'2' %}
+									  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+									  {% endif %}
+									  {% endfor %}
+									  {% if application.has_next %}
+									  <li class="page-item">
+										<a class="page-link" href="?page={{ application.next_page_number }}">
+										  Next
+										</a>
+									  </li>
+									  {% endif %}
+									</ul>
+								  </nav>
+								</div>
+							  {% endif %}
 							</div>
 						</div>
 					</div>
@@ -167,9 +197,39 @@
 									</tbody>
 								</table>
 							</div>
+							{% if course.paginator.num_pages > 1 %}
+								<div class="card-footer d-flex justify-content-end">
+								  <nav aria-label="Page navigation">
+									<ul class="pagination">
+									  {% if course.has_previous %}
+										<li class="page-item">
+										  <a class="page-link" href="?page={{ course.previous_page_number }}">
+											Previous
+										  </a>
+										</li>
+									  {% endif %}
+									  {% for num in course.paginator.page_range %}
+									  {% if num == course.number %}
+									  <li class="page-item active">
+										<a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+									  </li>
+									  {% elif num > course.number|add:'-2' and num < course.number|add:'2' %}
+									  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+									  {% endif %}
+									  {% endfor %}
+									  {% if course.has_next %}
+									  <li class="page-item">
+										<a class="page-link" href="?page={{ course.next_page_number }}">
+										  Next
+										</a>
+									  </li>
+									  {% endif %}
+									</ul>
+								  </nav>
+								</div>
+							  {% endif %}
 						</div>
 					</div>
-
 					<br>
 					<div class="row">
 						<div class="col-12 col-lg-12 d-flex">
@@ -197,6 +257,37 @@
 									</tbody>
 								</table>
 							</div>
+							{% if task.paginator.num_pages > 1 %}
+								<div class="card-footer d-flex justify-content-end">
+								  <nav aria-label="Page navigation">
+									<ul class="pagination">
+									  {% if task.has_previous %}
+										<li class="page-item">
+										  <a class="page-link" href="?page={{ task.previous_page_number }}">
+											Previous
+										  </a>
+										</li>
+									  {% endif %}
+									  {% for num in task.paginator.page_range %}
+									  {% if num == task.number %}
+									  <li class="page-item active">
+										<a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+									  </li>
+									  {% elif num > task.number|add:'-2' and num < task.number|add:'2' %}
+									  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+									  {% endif %}
+									  {% endfor %}
+									  {% if task.has_next %}
+									  <li class="page-item">
+										<a class="page-link" href="?page={{ task.next_page_number }}">
+										  Next
+										</a>
+									  </li>
+									  {% endif %}
+									</ul>
+								  </nav>
+								</div>
+							  {% endif %}
 						</div>
 					</div>
 				</div>

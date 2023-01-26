@@ -74,6 +74,8 @@ class Register(models.Model):
 class Results(models.Model):
     title_ru = models.CharField(max_length=100)
     title_uz = models.CharField(max_length=100)
+    text_ru = models.CharField(max_length=255)
+    text_uz = models.CharField(max_length=255)
 
 
 class ResultItems(models.Model):

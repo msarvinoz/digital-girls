@@ -5,11 +5,10 @@ urlpatterns = [
     path('', signin_view, name='sign-in'),
     path('user-detail/<int:pk>/', user_detail, name='user-detail'),
     path('user-update/<int:pk>/', user_update, name='user-update'),
+    path('user-password-update/<int:pk>/', user_password_update, name='user-password-update'),
     path('log-out/<int:pk>/', logout_view, name='log-out'),
-    path('applicants-data/', applicants_data, name='applicants-data'),
     path("admin-page/", home_view, name="dashboard"),
     path('search-applicants/', search_applicants, name='search-applicants'),
-    path("change-appl-status/<int:pk>/", change_applicant_status, name="change-applicant-status"),
     path("banner/", banner_view, name="banner"),
     path('direction-title/', direction_title, name='direction-title'),
     path('create-direction-title/', create_direction_title, name='create-direction-title'),
@@ -47,6 +46,7 @@ urlpatterns = [
     path('result-page/', result_view, name='result-page'),
     path('create-result/', create_result, name='create-result'),
     path('update-result/<int:pk>/', update_result, name='update-result'),
-    path('delete-result/<int:pk>/', delete_result, name='delete-result')
+    path('delete-result/<int:pk>/', delete_result, name='delete-result'),
+    path('approach-paginator/', approach_item_paginator, name='approach-item-paginator'),
 
 ]

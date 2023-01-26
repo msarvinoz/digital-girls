@@ -1,7 +1,8 @@
 from calendar import calendar
-
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from main.models import *
@@ -13,10 +14,16 @@ from django.db.models.functions import ExtractDay, ExtractMonth
 import calendar
 
 
-def applicants_data(request):
-    dataset = Register.objects.all()
-    ser = RegisterSerializer('json', dataset)
-    return JsonResponse(ser.data, safe=False)
+def PagenatorPage(List, num, request):
+    paginator = Paginator(List, num)
+    pages = request.GET.get('page')
+    try:
+        list = paginator.page(pages)
+    except PageNotAnInteger:
+        list = paginator.page(1)
+    except EmptyPage:
+        list = paginator.page(paginator.num_pages)
+    return list
 
 
 def signin_view(request):
@@ -65,8 +72,14 @@ def home_view(request):
         else:
             mon_list.append(i)
     print(len(mon_list))
+    application = Register.objects.all().order_by('-id')
+    course = DirectionItems.objects.all().order_by('-id')
+    task = TaskItems.objects.all().order_by('-id')
     context = {
-        'application_list': Register.objects.all(),
+        'application': PagenatorPage(application, 2, request),
+        'application_list': application,
+        'course': PagenatorPage(course, 3, request),
+        'task': PagenatorPage(task, 2, request),
         'register_count': Register.objects.all().count(),
         'direction_list': DirectionItems.objects.all(),
         'direction_count': DirectionItems.objects.all().count(),
@@ -80,26 +93,14 @@ def home_view(request):
     return render(request, 'dashboard-default.html', context)
 
 
+global s
 def search_applicants(request):
     query = request.GET.get('query', None)
-    if query:
+    if query is not None:
         s = Register.objects.filter(name__icontains=query)
-    print(323)
-    return render(request, 'search-applicant.html', context = {'s': s})
-
-
-def change_applicant_status(request, pk):
-    applicants = Register.objects.get(pk=pk)
-    if request.method == 'POST':
-        applicants = Register.objects.get(pk=pk)
-        status = request.POST.get("status")
-        if status is not None:
-            messages.success(request, 'successfully edited!')
-        else:
-            messages.error(request, 'can not edit!')
-        applicants.status = status
-    applicants.save()
-    return render(request, 'change-applicant-status.html')
+        print(323)
+        return render(request, 'search-applicant.html', context={'s':s})
+    return render(request, 'search-applicant.html')
 
 
 def direction_title(request):
@@ -144,8 +145,10 @@ def update_direction_title(request, pk):
 
 
 def direction_courses(request):
+    course = DirectionItems.objects.all().order_by('-id')
     context = {
-        'courses': DirectionItems.objects.all().order_by('-id')
+        'courses': DirectionItems.objects.all().order_by('-id'),
+        'course': PagenatorPage(course, 3, request),
     }
     return render(request, 'direction.html', context)
 
@@ -290,7 +293,9 @@ def about_project(request):
     project = AboutItems.objects.all().order_by('-id')[4:]
     active = AboutItems.objects.all().order_by('-id')[:4]
     context = {
+        'project1': PagenatorPage(project, 2, request),
         'project': project,
+        'active1': PagenatorPage(active, 2, request),
         'active': active
     }
     return render(request, 'about-project.html', context)
@@ -516,6 +521,7 @@ def tasks_view(request):
     for i in task:
         task_list.append(i)
     context = {
+        'task': PagenatorPage(task, 2, request),
         'active_tasks': TaskItems.objects.all().order_by('id')[:10],
         'list_num': len(task_list),
     }
@@ -579,9 +585,13 @@ def create_result_title(request):
     if request.method == "POST":
         title_ru = request.POST.get("title_ru")
         title_uz = request.POST.get("title_uz")
+        text_ru = request.POST.get('text_ru')
+        text_uz = request.POST.get('text_uz')
         Results.objects.create(
             title_ru=title_ru,
             title_uz=title_uz,
+            text_ru=text_ru,
+            text_uz=text_uz
         )
         return redirect("result-title")
     return redirect("result-title")
@@ -596,8 +606,12 @@ def update_result_title(request, pk):
         item = Results.objects.get(pk=pk)
         title_ru = request.POST["title_ru"]
         title_uz = request.POST["title_uz"]
+        text_ru = request.POST["text_ru"]
+        text_uz = request.POST["text_uz"]
         item.title_ru = title_ru
         item.title_uz = title_uz
+        item.text_ru = text_ru
+        item.text_uz = text_uz
         item.save()
         return redirect("result-title")
     return render(request, 'update-result-title.html', context)
@@ -609,6 +623,7 @@ def result_view(request):
     for i in result:
         result_list.append(i)
     context = {
+        'result': PagenatorPage(result_list, 2, request),
         'active_results': ResultItems.objects.all().order_by('-id')[:5],
         'list_num': len(result_list),
     }
@@ -691,4 +706,43 @@ def user_update(request, pk):
         'user': user
     }
     return render(request, 'user-update.html', context)
+
+
+def user_password_update(request, pk):
+    user = User.objects.get(pk=pk)
+    if request.method == 'POST':
+        user = User.objects.get(pk=pk)
+        new_password = request.POST.get('new_password')
+        password_confirm = request.POST.get('password_confirm')
+        if new_password is not None:
+            if new_password == password_confirm:
+                user.set_password(new_password)
+                user.save()
+            else:
+                print('dont match')
+        else:
+            print(111)
+        return redirect('user-detail', user.pk)
+    return render(request, 'user-password-update.html')
+
+
+def PagenatorPage(List, num, request):
+    paginator = Paginator(List, num)
+    pages = request.GET.get('page')
+    try:
+        list = paginator.page(pages)
+    except PageNotAnInteger:
+        list = paginator.page(1)
+    except EmptyPage:
+        list = paginator.page(paginator.num_pages)
+    return list
+
+
+@login_required(login_url='sign-in')
+def approach_item_paginator(request):
+    approach = DirectionItems.objects.all().order_by('-id')
+    context = {
+        'approach': PagenatorPage(approach, 2, request)
+    }
+    return render(request, 'direction.html', context)
 
