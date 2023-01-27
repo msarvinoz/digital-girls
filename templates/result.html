@@ -88,29 +88,29 @@
 										</tbody>
 									</table>
 								</div>
-								{% if result.paginator.num_pages > 1 %}
+								{% if active_results.paginator.num_pages > 1 %}
 								<div class="card-footer d-flex justify-content-end">
 								  <nav aria-label="Page navigation">
 									<ul class="pagination">
-									  {% if result.has_previous %}
+									  {% if active_results.has_previous %}
 										<li class="page-item">
-										  <a class="page-link" href="?page={{ result.previous_page_number }}">
+										  <a class="page-link" href="?page={{ active_results.previous_page_number }}">
 											Previous
 										  </a>
 										</li>
 									  {% endif %}
-									  {% for num in result.paginator.page_range %}
-									  {% if num == result.number %}
+									  {% for num in active_results.paginator.page_range %}
+									  {% if num == active_results.number %}
 									  <li class="page-item active">
 										<a class="page-link" href="#" tabindex="-1">{{ num }}</a>
 									  </li>
-									  {% elif num > result.number|add:'-2' and num < result.number|add:'2' %}
+									  {% elif num > active_results.number|add:'-2' and num < active_results.number|add:'2' %}
 									  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
 									  {% endif %}
 									  {% endfor %}
-									  {% if result.has_next %}
+									  {% if active_results.has_next %}
 									  <li class="page-item">
-										<a class="page-link" href="?page={{ result.next_page_number }}">
+										<a class="page-link" href="?page={{ active_results.next_page_number }}">
 										  Next
 										</a>
 									  </li>

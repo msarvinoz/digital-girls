@@ -8,6 +8,7 @@ urlpatterns = [
     path('user-password-update/<int:pk>/', user_password_update, name='user-password-update'),
     path('log-out/<int:pk>/', logout_view, name='log-out'),
     path("admin-page/", home_view, name="dashboard"),
+    path('application-paginator/',application_paginator, name='application-page'),
     path('search-applicants/', search_applicants, name='search-applicants'),
     path("banner/", banner_view, name="banner"),
     path('direction-title/', direction_title, name='direction-title'),
@@ -47,6 +48,5 @@ urlpatterns = [
     path('create-result/', create_result, name='create-result'),
     path('update-result/<int:pk>/', update_result, name='update-result'),
     path('delete-result/<int:pk>/', delete_result, name='delete-result'),
-    path('approach-paginator/', approach_item_paginator, name='approach-item-paginator'),
 
 ]

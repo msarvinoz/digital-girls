@@ -72,24 +72,20 @@ def home_view(request):
         else:
             mon_list.append(i)
     print(len(mon_list))
-    application = Register.objects.all().order_by('-id')
-    course = DirectionItems.objects.all().order_by('-id')
-    task = TaskItems.objects.all().order_by('-id')
+    application = Register.objects.all().order_by('-id')[:5]
+    course = DirectionItems.objects.all().order_by('id')[:4]
+    task = TaskItems.objects.all().order_by('id')[:4]
     context = {
-        'application': PagenatorPage(application, 2, request),
         'application_list': application,
-        'course': PagenatorPage(course, 3, request),
-        'task': PagenatorPage(task, 2, request),
         'register_count': Register.objects.all().count(),
-        'direction_list': DirectionItems.objects.all(),
+        'direction_list': course,
         'direction_count': DirectionItems.objects.all().count(),
-        'task_list': TaskItems.objects.all(),
+        'task_list': task,
         'task_count': TaskItems.objects.all().count(),
         'day': day,
         'month': months,
         "qs": mon_list,
     }
-
     return render(request, 'dashboard-default.html', context)
 
 
@@ -147,8 +143,7 @@ def update_direction_title(request, pk):
 def direction_courses(request):
     course = DirectionItems.objects.all().order_by('-id')
     context = {
-        'courses': DirectionItems.objects.all().order_by('-id'),
-        'course': PagenatorPage(course, 3, request),
+        'approach': PagenatorPage(course, 3, request),
     }
     return render(request, 'direction.html', context)
 
@@ -200,7 +195,7 @@ def update_direction(request, pk):
         if image is not None:
             course.image = image
         if directions_ru and directions_uz is not None:
-            messages.success(request, 'successfully created!')
+            messages.success(request, 'successfully edited!')
             course.save()
         else:
             messages.error(request, 'can not create!')
@@ -293,10 +288,8 @@ def about_project(request):
     project = AboutItems.objects.all().order_by('-id')[4:]
     active = AboutItems.objects.all().order_by('-id')[:4]
     context = {
-        'project1': PagenatorPage(project, 2, request),
-        'project': project,
-        'active1': PagenatorPage(active, 2, request),
-        'active': active
+        'project': PagenatorPage(project, 2, request),
+        'active': PagenatorPage(active, 2, request),
     }
     return render(request, 'about-project.html', context)
 
@@ -516,13 +509,12 @@ def update_task_title(request, pk):
 
 
 def tasks_view(request):
-    task = TaskItems.objects.all().order_by('id')
+    task = TaskItems.objects.all().order_by('id')[:10]
     task_list = []
     for i in task:
         task_list.append(i)
     context = {
-        'task': PagenatorPage(task, 2, request),
-        'active_tasks': TaskItems.objects.all().order_by('id')[:10],
+        'task': PagenatorPage(task, 3, request),
         'list_num': len(task_list),
     }
     return render(request, 'task.html', context)
@@ -618,13 +610,12 @@ def update_result_title(request, pk):
 
 
 def result_view(request):
-    result = ResultItems.objects.all().order_by('-id')
+    result = ResultItems.objects.all().order_by('-id')[:5]
     result_list = []
     for i in result:
         result_list.append(i)
     context = {
-        'result': PagenatorPage(result_list, 2, request),
-        'active_results': ResultItems.objects.all().order_by('-id')[:5],
+        'active_results': PagenatorPage(result_list, 2, request),
         'list_num': len(result_list),
     }
     return render(request, 'result.html', context)
@@ -726,23 +717,10 @@ def user_password_update(request, pk):
     return render(request, 'user-password-update.html')
 
 
-def PagenatorPage(List, num, request):
-    paginator = Paginator(List, num)
-    pages = request.GET.get('page')
-    try:
-        list = paginator.page(pages)
-    except PageNotAnInteger:
-        list = paginator.page(1)
-    except EmptyPage:
-        list = paginator.page(paginator.num_pages)
-    return list
-
-
-@login_required(login_url='sign-in')
-def approach_item_paginator(request):
-    approach = DirectionItems.objects.all().order_by('-id')
+def application_paginator(request):
+    users = Register.objects.all().order_by('-id')
     context = {
-        'approach': PagenatorPage(approach, 2, request)
+        "users": PagenatorPage(users, 3, request),
     }
-    return render(request, 'direction.html', context)
+    return render(request, 'application-page.html', context)
 

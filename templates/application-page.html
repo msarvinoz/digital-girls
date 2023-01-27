@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-12 col-lg-12 d-flex">
+    <div class="card flex-fill w-100">
+      <div class="card-header">
+        <span class="badge badge-primary float-right">Applicants</span>
+        <table id="application" class="table mb-0">
+          <h2>Applications</h2>
+          <br>
+          <br>
+          <a href="{% url 'search-applicants' %}">Search</a>
+          <br>
+          <thead>
+          <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Birth</th>
+            <th>Applied in</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for i in users %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.name}}</td>
+            <td>{{ i.surname }}</td>
+            <th>{{ i.phone }}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ i.birth }}</td>
+            <td>{{ i.created }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+                    {% if users.paginator.num_pages > 1 %}
+                      <div class="card-footer d-flex justify-content-end">
+                        <nav aria-label="Page navigation">
+                          <ul class="pagination">
+                            {% if users.has_previous %}
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{users.previous_page_number }}">
+                                  Previous
+                                </a>
+                              </li>
+                            {% endif %}
+                            {% for num in users.paginator.page_range %}
+                            {% if num == users.number %}
+                            <li class="page-item active">
+                              <a class="page-link" href="#" tabindex="-1">{{ num }}</a>
+                            </li>
+                            {% elif num > users.number|add:'-2' and num < users.number|add:'2' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if users.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ users.next_page_number }}">
+                                Next
+                              </a>
+                            </li>
+                            {% endif %}
+                          </ul>
+                        </nav>
+                      </div>
+                      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

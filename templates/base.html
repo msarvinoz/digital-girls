@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -150,3 +151,7 @@
 </body>
 
 </html>
+{% else %}
+<h1>You are not authenticated or the password has changed, try to log in</h1>
+<h1><a href="{% url 'sign-in' %}">log in</a></h1>
+{% endif %}
