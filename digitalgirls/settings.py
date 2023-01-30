@@ -40,12 +40,16 @@ INSTALLED_APPS = [
     'main',
     'rest_framework',
     'phone_field',
-    'drf_yasg'
+    'drf_yasg',
+    "corsheaders",
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -126,6 +130,40 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static/']
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'static/'
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000"
+]
+
+
+CORS_ALLOWED_ALL = True
+
+
+CORS_ALLOWED_HEADERS = [
+    "x-requested-with",
+    "accept",
+    "origin",
+    "authorization",
+    "x-csrftoken",
+    "token",
+    "x-device-id",
+    "x-device-type",
+    "x-push-id",
+    "dataserviceversion",
+    "maxdataserviceversion"
+]
+
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
